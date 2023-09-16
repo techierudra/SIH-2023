@@ -1,173 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ReEngineering</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-        }
-
-        h1 {
-            text-align: center;
-            margin-top: 20px;
-            color: rgb(29, 185, 185);
-        }
-
-        table {
-            width: 80%;
-            margin: 20px auto;
-            border-collapse: collapse;
-        }
-
-        th, td {
-            border: 1px solid #ccc;
-            padding: 5px;
-            text-align: center;
-            height: auto;
-        }
-
-        th {
-            background-color: #f2f2f2;
-        }
-
-        tr:nth-child(even) {
-            background-color: #f2f2f2;
-        }
-
-        td:last-child {
-            display: flex;
-        }
-
-        .btn-approve, .btn-decline, .btn-export {
-            padding: 7px 10px;
-            border: none;
-            cursor: pointer;
-            margin: center;
-        }
-
-        .btn-approve {
-            background-color: #4CAF50;
-            color: white;
-            margin-right: auto;
-        }
-
-        .btn-decline {
-            background-color: #f44336;
-            color: white;
-            margin-right: auto;
-        }
-
-        .btn-export {
-            background-color: #ff8800;
-            color: white;
-            margin: auto;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <title>Login</title>
+  <link href="https://fonts.googleapis.com/css?family=Assistant:400,700" rel="stylesheet">
+  <link rel="stylesheet" href="./style.css">
 </head>
 <body>
-    <h1>ReEngineering</h1>
-    <table>
-        <thead>
-            <tr>
-                <th>Serial No.</th>
-                <th>Require Weight</th>
-                <th>Current Weight</th>
-                <th>Min Weight</th>
-                <th>Max Weight</th>
-                <th>Override</th>
-                <th>Export</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>SIH-001</td>
-                <td>56 kg</td>
-                <td id="currentWeight">Loading...</td>
-                <td><input type="number" id="minWeightInput" style="width: 40px; height: 20px;" onchange="updateMinValue(this.value)"> kg</td>
-                <td><input type="number" id="maxWeightInput" style="width: 40px; height: 20px;" onchange="updateMaxValue(this.value)"> kg</td>
-                <td> 
-                    <button class="btn-approve" onclick="updateOverride(1)">Yes</button>
-                    <button class="btn-decline" onclick="updateOverride(0)">No</button>
-                </td>
-                <td> 
-                    <button class="btn-export" onclick="exportData()">Export</button>
-                </td>  
-            </tr>
-            <!-- Add more rows as needed -->
-        </tbody>
-    </table>
-    
-    <!-- Firebase Data Display -->
-    <div id="data"></div>
-
-    <script src="https://www.gstatic.com/firebasejs/8.2.6/firebase.js"></script>
-    <script>
-        var firebaseConfig = {
-            apiKey: "AIzaSyDmPx0px5DcN5N9TTjYqzaLVgt5CSOhpIk",
-            authDomain: "sih-2023-e5d40.firebaseapp.com",
-            databaseURL: "https://sih-2023-e5d40-default-rtdb.firebaseio.com"
-        };
-
-        firebase.initializeApp(firebaseConfig);
-
-        var database = firebase.database();
-
-        // Correct the reference to "RawData" in your Firebase database
-        var ref = database.ref("SIH/RawData");
-
-        ref.on("value", function(snapshot) {
-            var data = snapshot.val();
-
-            // Display real-time "RawData" value in the "Current Weight" column
-            var rawDataValue = data ? data : "N/A";
-            document.getElementById("currentWeight").textContent = rawDataValue + " kg";
-        });
-
-        // Function to export data to CSV
-        function exportData() {
-            // Fetch the values
-            var serialNo = document.querySelector("td:first-child").textContent;
-            var requireWeight = document.querySelector("td:nth-child(2)").textContent;
-            var currentWeight = document.getElementById("currentWeight").textContent;
-            var minWeight = document.getElementById("minWeightInput").value + " kg";
-            var maxWeight = document.getElementById("maxWeightInput").value + " kg";
-
-            // Create a CSV content string
-            var csvContent = "Serial No.,Require Weight,Current Weight,Min Weight,Max Weight\n";
-            csvContent += serialNo + "," + requireWeight + "," + currentWeight + "," + minWeight + "," + maxWeight + "\n";
-
-            // Create a Blob
-            var blob = new Blob([csvContent], { type: 'text/csv' });
-            var url = URL.createObjectURL(blob);
-
-            // Create a download link and trigger the click event
-            var a = document.createElement("a");
-            a.href = url;
-            a.download = "data.csv";
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-        }
-
-        // Function to update "Override" in Firebase
-        function updateOverride(value) {
-            // Update "Override" in Firebase with the chosen value (1 for Yes, 0 for No)
-            database.ref("SIH/Override").set(value);
-        }
-
-        // Function to update "Min_Value" in Firebase
-        function updateMinValue(value) {
-            // Update "Min_Value" in Firebase with the new value
-            database.ref("SIH/Min_Value").set(value);
-        }
-
-        // Function to update "Max_Value" in Firebase
-        function updateMaxValue(value) {
-            // Update "Max_Value" in Firebase with the new value
-            database.ref("SIH/Max_Value").set(value);
-        }
-    </script>
+<section class='login' id='login'>
+  <div class='head'>
+    <h1 class='company'>ReEngineering</h1>
+  </div>
+  <p class='msg'>Welcome back</p>
+  <div class='form'>
+    <form id="login-form">
+      <input type="text" placeholder='Username' class='text' id='username' required><br>
+      <input type="password" placeholder='••••••••••••••' class='password' id='password'><br>
+      <a href="#" class='btn-login' id='do-login'>Login</a>
+      <a href="#" class='forgot'>Forgot?</a>
+    </form>
+  </div>
+</section>
+<footer>
+</footer>
+<script src="./script.js"></script>
 </body>
 </html>
