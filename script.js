@@ -13,7 +13,7 @@ loginButton.addEventListener('click', function () {
   // Check if the username and password are correct
   if (enteredUsername === 'admin' && enteredPassword === 'admin') {
     // Redirect to the index page (you can replace 'index.html' with your actual index page URL)
-    window.location.href = 'index.html';
+    window.location.href = 'dashboard.html';
   } else {
     // Display an error message or handle invalid login here
     alert('Invalid username or password. Please try again.');
